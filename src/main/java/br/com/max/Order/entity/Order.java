@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,4 +32,12 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> items = new ArrayList<>();
+
+    public BigDecimal getTotal() {
+        BigDecimal sum = new BigDecimal("0");
+        for (OrderItem item : items) {
+            sum = item.getSubTotal().add(sum);
+        }
+        return sum;
+    }
 }
